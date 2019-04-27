@@ -1,61 +1,32 @@
-// var game = [
-//     {
-//         name: "Hej to moja ryba",
-//         playersMin: 2,
-//         playersMax: 4,
-//         kind: "Gra planszowa",
-//         isForAdults: false,
-//         price: 50
-//     },
-//     {
-//         name: "Zlodzieje!",
-//         playersMin: 3,
-//         playersMax: 6,
-//         kind: "Gra karcianka",
-//         isForAdults: false,
-//         price: 20
-//     },
-//     {
-//         name: "Ego",
-//         playersMin: 2,
-//         playersMax: 6,
-//         kind: "Gra planszowa",
-//         isForAdults: false,
-//         price: 120
-//     },
-//     {
-//         name:"Speed Dating",
-//         playersMin: 3,
-//         playersMax: 7,
-//         kind: "Gra karcianka",
-//         isForAdults: false,
-//         price: 70
-//     }
-// ]
+class Game {
+    constructor(name, kind, price, discount) {
+        this._name = name;
+        this._kind = kind;
+        this._price = price;
+        this._discount = discount;
+    }
 
-// function Game (name, kind, price, discount) {
-//     this.name = name;
-//     this.kind = kind;
-//     this.price = price;
-//     this.discount = discount;
-// }
+    get name() {
+        return this._name;
+    }
 
-// Game.prototype = {
-//     getName: function () {
-//         return this.name;
-//     },
-//     getKind: function () {
-//         return this.kind;
-//     }
-// }
+    get kind() {
+        return this._kind;
+    }
 
-// Game.prototype.getName = function () {
-//     return this.name;
-// }
+    get price() {
+        return this._price;
+    }
 
-// Game.prototype.message = function () {
-//     console.log("message!")
-// }
+    get discount() {
+        return this._discount
+    }
+
+    toString() {
+        return `This is ${this.name}, kind ${this.kind} cost ${this.price}zł.`;
+    }
+
+}
 
 // Game.prototype.getNewPrice = function(price , discount) {
 //     return this.price - (this.price * this.discount)
@@ -66,39 +37,51 @@
 //     this.isForAdults = isForAdults;
 // }
 
-// GameNewProperties.prototype = Object.create(Game.prototype);
-// GameNewProperties.prototype.constructor = GameNewProperties;
+class gameDatabase {
+    constructor() {
+        this._games = [];
+    }
 
-// GameNewProperties.prototype.forAdults = function() {
-//     return this.isForAdults === false ? "No" : "Yes"
-// }
+    findGameByName(name) {
+        return this._games.find(game => game.name === name);
+    }
 
-// var checkGame = new GameNewProperties("Dobble", "Gra karciana", false);
-// console.log("This game is for adults ? " + checkGame.forAdults());
+    addGame(game) {
+        if(this._games.some(gameInDatabase => game.name === gameInDatabase.name)){
+            console.log("This game was added");
+            return;
+        }
 
-// var dixitGame = new Game ("Dixit", "Gra planszowa", 90, 0.1);
-// console.log("Add new game ", dixitGame.getName(), "kind: ", dixitGame.getKind() );
+        this._games.push(game);
+    }
 
-// console.log("New price:",dixitGame.getNewPrice());
+    deletGame(name) {
+        this._games = this._games.filter(game => game.name !== name);
+    }
 
-// var moduleGame = (function() {
+    displayGame(name) {
+        console.log(this.findGameByName(name).toString());
+    }
 
-//     var _privateGame = 'New Game';
+    displayGames() {
+        this._games.forEach(game => console.log("This is " + game.name  + ", kind " + game.kind + " cost " + game.price + "zł."))
+    }
+}
 
-//     function _privateGame() {
-//         console.log(_privateGame)
-//     }
+const newGameDatabase =  new gameDatabase();
 
-//     return {
-//         addGame : function() {
-//             _privateGame();
-//         }
-//     };
-// }());
+newGameDatabase.addGame(new Game('Hej to moja ryba', 'Gra planszowa', 50 , 0.1));
+newGameDatabase.addGame(new Game('Zlodzieje!', 'Gra karcianka', 20 , 0.05));
+newGameDatabase.addGame(new Game('Ego', 'Gra planszowa', 120 , 0));
+newGameDatabase.addGame(new Game('Speed Dating', 'Gra karciana', 70 , 0.1));
 
-// moduleGame.addGame();
-
-import {Game} from "../lib/classes/Discount"
-
-let gameOne = new Game("Hej to moja ryba","Gra planszowa", 90, 0.1)
-console.log(gameOne.getFullName());
+console.log("#######");
+newGameDatabase.displayGame('Hej to moja ryba');
+console.log("#######");
+newGameDatabase.displayGames();
+newGameDatabase.deletGame('Speed Dating');
+console.log("#######");
+newGameDatabase.displayGames();
+newGameDatabase.deletGame('Ego');
+console.log("#######");
+newGameDatabase.displayGames();

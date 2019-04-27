@@ -1,89 +1,124 @@
 "use strict";
 
-var _Discount = require("../lib/classes/Discount");
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-// var game = [
-//     {
-//         name: "Hej to moja ryba",
-//         playersMin: 2,
-//         playersMax: 4,
-//         kind: "Gra planszowa",
-//         isForAdults: false,
-//         price: 50
-//     },
-//     {
-//         name: "Zlodzieje!",
-//         playersMin: 3,
-//         playersMax: 6,
-//         kind: "Gra karcianka",
-//         isForAdults: false,
-//         price: 20
-//     },
-//     {
-//         name: "Ego",
-//         playersMin: 2,
-//         playersMax: 6,
-//         kind: "Gra planszowa",
-//         isForAdults: false,
-//         price: 120
-//     },
-//     {
-//         name:"Speed Dating",
-//         playersMin: 3,
-//         playersMax: 7,
-//         kind: "Gra karcianka",
-//         isForAdults: false,
-//         price: 70
-//     }
-// ]
-// function Game (name, kind, price, discount) {
-//     this.name = name;
-//     this.kind = kind;
-//     this.price = price;
-//     this.discount = discount;
-// }
-// Game.prototype = {
-//     getName: function () {
-//         return this.name;
-//     },
-//     getKind: function () {
-//         return this.kind;
-//     }
-// }
-// Game.prototype.getName = function () {
-//     return this.name;
-// }
-// Game.prototype.message = function () {
-//     console.log("message!")
-// }
-// Game.prototype.getNewPrice = function(price , discount) {
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var Game =
+/*#__PURE__*/
+function () {
+  function Game(name, kind, price, discount) {
+    _classCallCheck(this, Game);
+
+    this._name = name;
+    this._kind = kind;
+    this._price = price;
+    this._discount = discount;
+  }
+
+  _createClass(Game, [{
+    key: "toString",
+    value: function toString() {
+      return "This is ".concat(this.name, ", kind ").concat(this.kind, " cost ").concat(this.price, "z\u0142.");
+    }
+  }, {
+    key: "name",
+    get: function get() {
+      return this._name;
+    }
+  }, {
+    key: "kind",
+    get: function get() {
+      return this._kind;
+    }
+  }, {
+    key: "price",
+    get: function get() {
+      return this._price;
+    }
+  }, {
+    key: "discount",
+    get: function get() {
+      return this._discount;
+    }
+  }]);
+
+  return Game;
+}(); // Game.prototype.getNewPrice = function(price , discount) {
 //     return this.price - (this.price * this.discount)
 // }
 // function GameNewProperties (name, kind, isForAdults) {
 //     Game.call(this, name, kind);
 //     this.isForAdults = isForAdults;
 // }
-// GameNewProperties.prototype = Object.create(Game.prototype);
-// GameNewProperties.prototype.constructor = GameNewProperties;
-// GameNewProperties.prototype.forAdults = function() {
-//     return this.isForAdults === false ? "No" : "Yes"
-// }
-// var checkGame = new GameNewProperties("Dobble", "Gra karciana", false);
-// console.log("This game is for adults ? " + checkGame.forAdults());
-// var dixitGame = new Game ("Dixit", "Gra planszowa", 90, 0.1);
-// console.log("Add new game ", dixitGame.getName(), "kind: ", dixitGame.getKind() );
-// console.log("New price:",dixitGame.getNewPrice());
-// var moduleGame = (function() {
-//     var _privateGame = 'New Game';
-//     function _privateGame() {
-//         console.log(_privateGame)
-//     }
-//     return {
-//         addGame : function() {
-//             _privateGame();
-//         }
-//     };
-// }());
-// moduleGame.addGame();
-var gameOne = new _Discount.Game("Hej to moja ryba", "Gra planszowa", 90, 0.1);
-console.log(gameOne.getFullName());
+
+
+var gameDatabase =
+/*#__PURE__*/
+function () {
+  function gameDatabase() {
+    _classCallCheck(this, gameDatabase);
+
+    this._games = [];
+  }
+
+  _createClass(gameDatabase, [{
+    key: "findGameByName",
+    value: function findGameByName(name) {
+      return this._games.find(function (game) {
+        return game.name === name;
+      });
+    }
+  }, {
+    key: "addGame",
+    value: function addGame(game) {
+      if (this._games.some(function (gameInDatabase) {
+        return game.name === gameInDatabase.name;
+      })) {
+        console.log("This game was added");
+        return;
+      }
+
+      this._games.push(game);
+    }
+  }, {
+    key: "deletGame",
+    value: function deletGame(name) {
+      this._games = this._games.filter(function (game) {
+        return game.name !== name;
+      });
+    }
+  }, {
+    key: "displayGame",
+    value: function displayGame(name) {
+      console.log(this.findGameByName(name).toString());
+    }
+  }, {
+    key: "displayGames",
+    value: function displayGames() {
+      this._games.forEach(function (game) {
+        return console.log("This is " + game.name + ", kind " + game.kind + " cost " + game.price + "zł.");
+      });
+    }
+  }]);
+
+  return gameDatabase;
+}();
+
+var newGameDatabase = new gameDatabase();
+newGameDatabase.addGame(new Game('Hej to moja ryba', 'Gra planszowa', 50, 0.1));
+newGameDatabase.addGame(new Game('Zlodzieje!', 'Gra karcianka', 20, 0.05));
+newGameDatabase.addGame(new Game('Ego', 'Gra planszowa', 120, 0));
+newGameDatabase.addGame(new Game('Speed Dating', 'Gra karciana', 70, 0.1));
+console.log("#######");
+newGameDatabase.displayGame('Hej to moja ryba');
+console.log("#######");
+newGameDatabase.displayGames();
+newGameDatabase.deletGame('Speed Dating');
+console.log("#######");
+newGameDatabase.displayGames();
+newGameDatabase.deletGame('Ego');
+console.log("#######");
+newGameDatabase.displayGames();

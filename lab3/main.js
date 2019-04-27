@@ -1,38 +1,3 @@
-var game = [
-    {
-        name: "Hej to moja ryba",
-        playersMin: 2,
-        playersMax: 4,
-        kind: "Gra planszowa",
-        isForAdults: false,
-        price: 50
-    },
-    {
-        name: "Zlodzieje!",
-        playersMin: 3,
-        playersMax: 6,
-        kind: "Gra karcianka",
-        isForAdults: false,
-        price: 20
-    },
-    {
-        name: "Ego",
-        playersMin: 2,
-        playersMax: 6,
-        kind: "Gra planszowa",
-        isForAdults: false,
-        price: 120
-    },
-    {
-        name:"Speed Dating",
-        playersMin: 3,
-        playersMax: 7,
-        kind: "Gra karcianka",
-        isForAdults: false,
-        price: 70
-    }
-]
-
 function Game (name, kind, price, discount) {
     this.name = name;
     this.kind = kind;
@@ -46,6 +11,9 @@ Game.prototype = {
     },
     getKind: function () {
         return this.kind;
+    },
+    toString: function() {
+        return "This is " + this.name  + ",  kind " + this.kind + " cost " + this.price + "zł.";
     }
 }
 
@@ -66,34 +34,56 @@ function GameNewProperties (name, kind, isForAdults) {
     this.isForAdults = isForAdults;
 }
 
-GameNewProperties.prototype = Object.create(Game.prototype);
-GameNewProperties.prototype.constructor = GameNewProperties;
+var gameDatabase = {};
+gameDatabase.module = (function () {
+    // Private 
+    var games = [];
 
-GameNewProperties.prototype.forAdults = function() {
-    return this.isForAdults === false ? "No" : "Yes"
-}
+    function findGameByName(name){
+        return games.find(function (game) {return game.name === name})
+    }
 
-var checkGame = new GameNewProperties("Dobble", "Gra karciana", false);
-console.log("This game is for adults ? " + checkGame.forAdults());
+    // Public 
+    return {
+        addGame: function (game) {
+            if(games.some(function (gameInDatabase) {return game.name === gameInDatabase.name})){
+                console.log("This game was added");
+                return;
+            }
 
-var dixitGame = new Game ("Dixit", "Gra planszowa", 90, 0.1);
-console.log("Add new game ", dixitGame.getName(), "kind: ", dixitGame.getKind() );
+            games.push(game);
+        },
 
-console.log("New price:",dixitGame.getNewPrice());
+        deletGame: function (name) {
+            games = games.filter(function (game) { return game.name !== name})
+        },
 
-// var moduleGame = (function() {
+        displayGame: function (name) {
+            console.log(findGameByName(name).toString());
+        },
 
-//     var _privateGame = 'New Game';
+        displayGames: function() {
+            games.forEach( function (game) {
+                console.log("This is " + game.name  + ", kind " + game.kind + " cost " + game.price + "zł.");
+            });
+        }
+    };
+})();
 
-//     function _privateGame() {
-//         console.log(_privateGame)
-//     }
+var newGameDatabase = gameDatabase.module;
 
-//     return {
-//         addGame : function() {
-//             _privateGame();
-//         }
-//     };
-// }());
+newGameDatabase.addGame(new Game('Hej to moja ryba', 'Gra planszowa', 50 , 0.1));
+newGameDatabase.addGame(new Game('Zlodzieje!', 'Gra karcianka', 20 , 0.05));
+newGameDatabase.addGame(new Game('Ego', 'Gra planszowa', 120 , 0));
+newGameDatabase.addGame(new Game('Speed Dating', 'Gra karciana', 70 , 0.1));
 
-// moduleGame.addGame();
+console.log("#######");
+newGameDatabase.displayGame('Hej to moja ryba');
+console.log("#######");
+newGameDatabase.displayGames();
+newGameDatabase.deletGame('Speed Dating');
+console.log("#######");
+newGameDatabase.displayGames();
+newGameDatabase.deletGame('Ego');
+console.log("#######");
+newGameDatabase.displayGames();

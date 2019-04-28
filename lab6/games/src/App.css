@@ -1,0 +1,24 @@
+.App {
+  display: flex;
+  flex-direction: column;
+}
+
+.game-list {
+  
+  flex-direction: column;
+  justify-content: flex-start;
+  margin: 20px 50px;
+}
+
+.game-details {
+  margin: 20px 50px;
+}
+
+ul,ol { 
+  margin: 0px;
+  padding: 0px;
+}
+
+.bold {
+    font-weight: 600;
+}

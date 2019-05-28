@@ -1,12 +1,15 @@
 import express from 'express';
 import bodyParser from 'body-parser';
+// import cors from 'cors'
 
 const Game = require('./Game');
 const GameDatabase = require('./GameDatabase');
+const cors = require('cors');
 
 const app = express();
 const port = 4000;
 
+app.use(cors());
 app.use(bodyParser.json()); // support json encoded bodies
 app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 
